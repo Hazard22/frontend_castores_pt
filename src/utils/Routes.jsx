@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import LoginScreen from "../components/LoginScreen"
 import SignUpScreen from "../components/SignUpScreen"
-import ForgottenPassword from "../components/ForgottenPassword";
+import RecoverPassword from "../components/RecoverPassword";
+import VideoBrowserScreen from "../components/VideoBrowserScreen";
 
 export const router = createBrowserRouter([
     {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
     },
     {
       path: '/forgotten-pass',
-      element: <ForgottenPassword/>
+      element: <RecoverPassword/>
+    },
+    {
+      path: '/home',
+      element: <VideoBrowserScreen/>
     }
 ]);
