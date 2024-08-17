@@ -10,12 +10,12 @@ const { darkAlgorithm } = theme;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ConfigProvider 
-    theme={
-      {algorithm: darkAlgorithm}
-    }
-    > 
-      <RouterProvider router={router} />
-    </ConfigProvider>
+      <ConfigProvider 
+      theme={
+        {algorithm: darkAlgorithm}
+      }
+      > 
+          <RouterProvider router={router} />
+      </ConfigProvider>
   </StrictMode>,
 )

@@ -3,7 +3,7 @@ import { useForm } from 'antd/es/form/Form'
 import React, { useRef, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { postRequest } from '../services/fetchServices'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SecurityCodeModal from './SecurityCodeModal'
 const site_key = import.meta.env.VITE_SITE_KEY
 const api_host = import.meta.env.VITE_API_HOST
@@ -12,6 +12,7 @@ export default function LoginScreen() {
 
     const [form] = useForm()
     const recaptchaRef = useRef(null);
+    const navigate = useNavigate()
 
     const [recaptchaValue, setRecaptchaValue] = useState(null);
 
@@ -30,12 +31,11 @@ export default function LoginScreen() {
             }
             const response =  await postRequest(
                 `${api_host}/users/login`,
-                {'Content-Type': 'application/json',},
+                {'Content-Type': 'application/json','credentials': 'include'},
                 values
             )
             if(response.status === 200){
-                message.success('Login exitoso')
-                setRecaptchaValue(null);  
+                 navigate('/home')
             }
             else if (response.status === 404){
                 message.warning('No existe usuario asignado a este nombre o correo')

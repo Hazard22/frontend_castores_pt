@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import LoginScreen from "../components/LoginScreen"
 import SignUpScreen from "../components/SignUpScreen"
 import RecoverPassword from "../components/RecoverPassword";
-import VideoBrowserScreen from "../components/VideoBrowserScreen";
+import Home from "../components/Home";
 
 export const router = createBrowserRouter([
     {
@@ -19,6 +19,6 @@ export const router = createBrowserRouter([
     },
     {
       path: '/home',
-      element: <VideoBrowserScreen/>
+      element: <Home/>
     }
 ]);
