@@ -45,6 +45,7 @@ export default function Home() {
         
         const fetchVideos = async () => {
             setloadingSearch(true)
+            setvideos(null)
             try {
                 const response = await getRequest(
                     `${api_host}/videos?searched=${searched}`,
@@ -81,7 +82,8 @@ export default function Home() {
                             <SearchBar
                             user={user}
                             loading={loadingSearch}
-                            setsearched={setloadingSearch}
+                            setsearched={setsearched}
+                            setvideos={setvideos}
                             />
                         </Header>
                         <Content style={contentStyle}>

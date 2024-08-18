@@ -1,13 +1,16 @@
-import { Button, Col, Dropdown, Flex, Input, Row, Space } from "antd";
+import { Button, Col, Dropdown, Flex, Input, message, Row, Space } from "antd";
 import {
     UserOutlined,
     SearchOutlined,
-    LogoutOutlined
+    LogoutOutlined,
+    HeartFilled
   } from '@ant-design/icons';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getRequest } from "../services/fetchServices";
+const api_host = import.meta.env.VITE_API_HOST
 
-export default function SearchBar({ user, loading, setsearched }) {
+export default function SearchBar({ user, loading, setsearched, setvideos }) {
 
     const navigate = useNavigate()
 
@@ -20,7 +23,28 @@ export default function SearchBar({ user, loading, setsearched }) {
     const handleSearch = () => { 
         if(searchedValue !== ""){
             setsearched(searchedValue);
+            console.log(`Se actualizo la palabra clave a: ${searchedValue} `);   
         }
+    }
+
+    const handleSearchFavorites = async () => {  
+            setvideos(null)
+            try {
+                const response = await getRequest(
+                    `${api_host}/videos/favorites`,
+                    {'Content-Type': 'application/json',},
+                )
+                if(response.status === 200){
+                    const data = await response.json()
+                    console.dir(data)
+                    setvideos(data)
+                }
+                else{
+                    throw new Error('Ha ocurrido un error')
+                }
+            } catch (error) {
+                message.error('Ha ocurrido un error')
+            }
     }
 
     const handleLogOut = () => {  
@@ -29,12 +53,18 @@ export default function SearchBar({ user, loading, setsearched }) {
 
     const items = [
         {
-          key: '1',
-          label: 'Cerrar sesión',
-          icon:<LogoutOutlined/>,
-          danger:true,
-          onClick:handleLogOut
+            key: '1',
+            label: 'Favoritos',
+            icon:<HeartFilled/>,
+            onClick:handleSearchFavorites
         },
+        {
+            key: '2',
+            label: 'Cerrar sesión',
+            icon:<LogoutOutlined/>,
+            danger:true,
+            onClick:handleLogOut
+          },
     ];
     
     return (
