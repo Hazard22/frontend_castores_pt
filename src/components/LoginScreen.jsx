@@ -15,12 +15,15 @@ export default function LoginScreen() {
     const navigate = useNavigate()
 
     const [recaptchaValue, setRecaptchaValue] = useState(null);
+    const [loadingLogin, setloadingLogin] = useState(false);
 
     const handleSubmit = () => {
         form.submit()
     }
 
     const handleFormSubmit = async (values) => { 
+
+        setloadingLogin(true)
 
         try {
             values.recaptchaToken = recaptchaValue
@@ -35,14 +38,17 @@ export default function LoginScreen() {
                 values
             )
             if(response.status === 200){
-                 navigate('/home')
+                setloadingLogin(false)
+                navigate('/home')
             }
             else if (response.status === 404){
+                setloadingLogin(false)
                 message.warning('No existe usuario asignado a este nombre o correo')
                 setRecaptchaValue(null); 
                 handleResetRecaptcha() 
             }
             else if(response.status === 403){
+                setloadingLogin(false)
                 message.warning('La contraseña es incorrecta')
                 setRecaptchaValue(null); 
                 handleResetRecaptcha() 
@@ -51,6 +57,8 @@ export default function LoginScreen() {
                 throw new Error('Error en login')
             }
         } catch (error) {
+            console.log(error);
+            setloadingLogin(false)
             message.error('Ha ocurrido un error')
             setRecaptchaValue(null); 
             handleResetRecaptcha() 
@@ -113,6 +121,8 @@ export default function LoginScreen() {
                 <Button 
                 type='primary'
                 onClick={handleSubmit}
+                loading={loadingLogin}
+                disabled={loadingLogin}
                 >
                     Ingresar
                 </Button>

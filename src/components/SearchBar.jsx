@@ -23,7 +23,7 @@ export default function SearchBar({ user, loading, setsearched, setvideos }) {
     const handleSearch = () => { 
         if(searchedValue !== ""){
             setsearched(searchedValue);
-            console.log(`Se actualizo la palabra clave a: ${searchedValue} `);   
+            
         }
     }
 
@@ -36,7 +36,7 @@ export default function SearchBar({ user, loading, setsearched, setvideos }) {
                 )
                 if(response.status === 200){
                     const data = await response.json()
-                    console.dir(data)
+                    
                     setvideos(data)
                 }
                 else{

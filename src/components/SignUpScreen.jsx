@@ -13,13 +13,15 @@ export default function SignUpScreen() {
 
     const [form] = useForm()
     const recaptchaRef = useRef(null);
-    const navigate = useNavigate()
 
     const [recaptchaValue, setRecaptchaValue] = useState(null);
     const [openSecurityCodeModal, setopenSecurityCodeModal] = useState(false);
     const [security_code, setsecurity_code] = useState(null)
+    const [loadingSignUp, setloadingSignUp] = useState();
 
     const handleFormSubmit = async (values) => { 
+
+        setloadingSignUp(true)
         
         try {
             values.recaptchaToken = recaptchaValue
@@ -32,12 +34,14 @@ export default function SignUpScreen() {
                 const data = await response.json()
                 setsecurity_code(data.security_code)
                 message.success('Cuenta creada con exito')
+                setloadingSignUp(false)
                 setopenSecurityCodeModal(true)
             }
             else{
                 throw new Error("Ha ocurrido un error")
             }
         } catch (error) {
+            setloadingSignUp(false)
             message.error('Ha ocurrido un error')
             handleResetRecaptcha()
         }
@@ -174,6 +178,8 @@ export default function SignUpScreen() {
                     <Button 
                     type='primary'
                     onClick={handleSubmit}
+                    loading={loadingSignUp}
+                    disabled={loadingSignUp}
                     >
                         Crear cuenta
                     </Button>
